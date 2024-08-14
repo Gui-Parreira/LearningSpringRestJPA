@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import med.voll.api.domain.usuario.UsuarioRepository;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (tokenJWT != null) {
             var subject = tokenService.getSubject(tokenJWT);
             var usuario = repository.findByLogin(subject);
+
             var auhentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auhentication);
         }
